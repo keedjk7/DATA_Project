@@ -31,24 +31,24 @@ def get_ratings(shop_id, item_id):
     return d
 
 
-Shopee_url = "https://shopee.th"
+Shopee_url = "https://shopee.sg"
 keyword_search = "headphone"
 headers = {
     "User-Agent": "Chrome",
     "Referer": "{}search?keyword={}".format(Shopee_url, keyword_search),
 }
 
-url = "https://shopee.co.th/api/v4/search/search_items?by=relevancy&keyword={}&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2".format(
+url = "https://shopee.sg/api/v2/search_items/?by=relevancy&keyword={}&limit=100&newest=0&order=desc&page_type=search".format(
     keyword_search
 )
+print(type(url))
 # can change "relevancy" to "latest": to sort by latest products instead
 
 # Shopee API request
 r = requests.get(url, headers=headers).json()
-
 count = 0
 for item in r["items"]:
-    print(item['item_basic']['name'])
+    print(item["name"])
     #df = pd.DataFrame(get_ratings(item["shopid"], item["itemid"]))
     #print(df.head()) # print only the head for brevity
     print("-" * 80)
