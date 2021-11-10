@@ -51,6 +51,11 @@ for item in r["items"]:
         print("price min : ",int(item['item_basic']['price_min'])/100000,"บาท |  price max : ",int(item['item_basic']['price_max'])/100000 ,"บาท")
     else:
         print("price : ",int(item['item_basic']['price'])/100000,"บาท")
+    taillink = item['item_basic']['name']
+    newtaillink = taillink.replace(" ","-")
+    link = 'https://shopee.co.th/{}'.format(newtaillink)
+    link = link +'-i.'+ str(item['item_basic']['shopid'])+'.'+str(item['item_basic']['itemid'])
+    print(link)
     lst.append(item['item_basic']['name'])
     #df = pd.DataFrame(get_ratings(item["shopid"], item["itemid"]))
     #print(df.head()) # print only the head for brevity
