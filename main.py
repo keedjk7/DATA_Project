@@ -2,6 +2,8 @@ import re
 import json
 import requests
 import pandas as pd
+from PIL import Image
+from io import BytesIO
 
 #test
 def get_ratings(shop_id, item_id):
@@ -36,16 +38,19 @@ headers = {
     "Referer": "{}search?keyword={}".format(Shopee_url, keyword_search),
 }
 
-url = "https://shopee.co.th/api/v4/search/search_items?by=relevancy&keyword={}&limit=100&newest=0&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2".format(
+url = "https://shopee.co.th/api/v4/search/search_items?by=relevancy&keyword={}&limit=5&newest=0&order=desc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2".format(
     keyword_search
 )
 
 
 # Shopee API request
 r = requests.get(url, headers=headers).json()
-lst = []
+lstshopee = []
 count = 0
 for item in r["items"]:
+    image_link = requests.get("https://cf.shopee.co.th/file/"+str(item['item_basic']['image']))
+    #img = Image.open(BytesIO(image_link.content))
+    #img.show()
     print(item['item_basic']['name'])
     if (int(item['item_basic']['price_min']) != int(item['item_basic']['price_max'])):
         print("price min : ",int(item['item_basic']['price_min'])/100000,"บาท |  price max : ",int(item['item_basic']['price_max'])/100000 ,"บาท")
@@ -56,9 +61,9 @@ for item in r["items"]:
     link = 'https://shopee.co.th/{}'.format(newtaillink)
     link = link +'-i.'+ str(item['item_basic']['shopid'])+'.'+str(item['item_basic']['itemid'])
     print(link)
-    lst.append(item['item_basic']['name'])
-    #df = pd.DataFrame(get_ratings(item["shopid"], item["itemid"]))
-    #print(df.head()) # print only the head for brevity
+    lstshopee.append(item['item_basic']['name'])
+    df = pd.DataFrame(get_ratings(item["shopid"], item["itemid"]))
+    print(df.head()) # print only the head for brevity
     print("-" * 100)
     count+=1
 print(count)

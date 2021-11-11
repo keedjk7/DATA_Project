@@ -1,1 +1,6 @@
-GE_GLOBAL_SEARCH&version=2".format(
+from PIL import Image
+
+
+
+im = Image.open("D:\django demo\จารแดง.JPG")
+im.show()
