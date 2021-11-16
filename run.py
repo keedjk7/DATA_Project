@@ -9,15 +9,13 @@ if __name__ == "__main__":
     keyword_search = input("search : ")
     print('-' * 100)
 
-    keyword_jd_central = urllib.parse.quote(keyword_search)
+    keyword_shopee = urllib.parse.quote(keyword_search)
     
-    HEADER_JD_CENTRAL["Referer"] = HEADER_JD_CENTRAL["Referer"].format(jd_central = URL_WEB_JD_CENTRAL, keyword = keyword_jd_central)
-    URL_SEARCH_JD_CENTRAL = URL_SEARCH_JD_CENTRAL.format(keyword =keyword_jd_central)
+    HEADER_SHOPEE["Referer"] = HEADER_SHOPEE["Referer"].format(shopee = URL_WEB_SHOPEE, keyword = keyword_shopee)
+    URL_SEARCH_SHOPEE = URL_SEARCH_SHOPEE.format(keyword =keyword_shopee)
 
-    res = requests.get(URL_SEARCH_JD_CENTRAL, headers = HEADER_JD_CENTRAL).json()
+    res = requests.get(URL_SEARCH_SHOPEE, headers = HEADER_SHOPEE).json()
 
-    print(res)
-    """""
     lstshopee = []
     for item in res["items"]:
         image_link = requests.get(URL_IMAGE_SHOPEE+str(item['item_basic']['image']))
@@ -36,4 +34,3 @@ if __name__ == "__main__":
         lstshopee.append(item['item_basic']['name'])
         print("-" * 100)
   
-"""
