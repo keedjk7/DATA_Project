@@ -11,6 +11,7 @@ URL_RATING_SHOPEE = "https://shopee.sg/api/v2/item/get_ratings?filter=0&flag=1&i
 URL_WEB_JD_CENTRAL      = 'https://www.jd.co.th/'
 HEADER_JD_CENTRAL       = {
     "User-Agent":   "Chrome",
-    "Referer":      "{jd_central}search/{keyword}"
+    "Referer":      "{jd_central}search/{keyword}.html"
 }
-URL_SEARCH_JD_CENTRAL   = "https://api.jd.co.th/client.action?body=%7B%22page%22%3A%221%22%2C%22pagesize%22%3A%2260%22%2C%22cid%22%3A%22%22%2C%22filed%22%3A%22%22%2C%22expandName%22%3A%7B%7D%2C%22brand%22%3A%22%22%2C%22isCorrect%22%3A%221%22%2C%22sort%22%3A%220%22%2C%22stock%22%3A1%2C%22keyword%22%3A%22{keyword}%22%7D&functionId=search&client=pc&clientVersion=2.0.0&lang=th_TH&area=&jsonp=_jsonp69bimtzz1fs"
+URL_SEARCH_JD_CENTRAL   = "https://api.jd.co.th/client.action?body=%7B%22page%22%3A%221%22%2C%22pagesize%22%3A%2210%22%2C%22cid%22%3A%22%22%2C%22filed%22%3A%22%22%2C%22expandName%22%3A%7B%7D%2C%22brand%22%3A%22%22%2C%22isCorrect%22%3A%221%22%2C%22sort%22%3A%220%22%2C%22stock%22%3A1%2C%22keyword%22%3A%22{keyword}%22%7D&functionId=search&client=pc&clientVersion=2.0.0&lang=th_TH&area=&"
+URL_LINK_ITEM_JD_CENTRAL = "https://www.jd.co.th/product/{wname}_{wareId}.html"
