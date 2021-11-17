@@ -63,7 +63,9 @@ if __name__ == "__main__":
             print(i,':',item_dict[i])
         print('-'*100)   
   
-    print('*****JD_CENTRAL*****')
+
+
+    print('\n*****JD_CENTRAL*****\n')
     for item in res_Jd_central["wareInfo"]:
         dict_jd_product = {}
         dict_jd_product["Image_link  "] = item['imageurl']
