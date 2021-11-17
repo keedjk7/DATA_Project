@@ -41,7 +41,7 @@ if __name__ == "__main__":
     JD_Queue = Queue()    
     Shopee_Queue = Queue()
 
-    print('*****SHOPEE*****')
+    print('\n*****SHOPEE*****\n')
     for item in res_shopee["items"]:
         dict_shopee_product = {}
         image_link = (URL_IMAGE_SHOPEE+str(item['item_basic']['image']))
