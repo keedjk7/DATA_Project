@@ -4,23 +4,92 @@ import html
 import urllib
 import pandas as pd
 
-class Queue:  
-    def __init__(self, list = None) :
-        if list == None:
-            self.items = []
-        else :
-            self.items = list
-    def enQueue(self,i):
-        self.items.append(i)       
-    def deQueue(self):
-        return self.items.pop(0)
-    def size(self):
-        return len(self.items)
+
+
+class node():
+    def __init__(self,data,next=None):
+        self.data=data
+        self.next=next
+class linklist():
+    def __init__(self):
+        self.head=None
+        self.tail=None
+    def append(self,data):
+        newnode=node(data)
+        if self.head is None:
+            self.head=newnode
+        else:
+            self.tail.next=newnode
+        self.tail=newnode
+    def __str__(self):
+        if self.head is None:
+            return ""
+        temp=str(self.head.data)
+        
+        last=self.head
+        while (last.next is not None):
+            temp=temp+" "+str(last.next.data)
+            
+            last=last.next
+            
+        return temp
+    def output(self):
+        if self.head is None:
+            return ""
+        item_dict=self.head.data
+        for i in item_dict:
+            print(i,':',item_dict[i])
+        print('-'*100)
+        last=self.head
+        while (last.next is not None):
+            item_dict=last.data
+            for i in item_dict:
+                print(i,':',item_dict[i])
+            print('-'*100)            
+            last=last.next
+            
     def isEmpty(self):
-        return self.items == []
+        if self.head is None:
+            return True
+        else:
+            return False
+    def dequeue(self):
+        temp=self.head.data
+        self.head=self.head.next
+        return temp
+    def size(self):
+        size=0
+        last=self.head
+        while last is not None:
+            last=last.next
+            size=size+1
+        return  size
+    def sortMax(self):
+        for i in range(self.size()-1):
+            last=self.head
+            while last.next is not None:
+                if last.data["Rating      "] < last.next.data["Rating      "]:
+                    temp=last.data
+                    last.data=last.next.data
+                    last.next.data=temp
+                last=last.next
+    def sortMin(self):
+        for i in range(self.size()-1):
+            last=self.head
+            while last.next is not None:
+                if last.data["Rating      "] > last.next.data["Rating      "]:
+                    temp=last.data
+                    last.data=last.next.data
+                    last.next.data=temp
+                last=last.next   
+
 
 if __name__ == "__main__":
+
     keyword_search = input("search : ")
+    print("Rating :rx mean sort Max to Min")
+    print("Rating :rn mean sort Min to Max")
+    keyword_sort = input("PLEASE ENTER YOUR SORT : ")
     print('-' * 100)
 
     keyword_shopee = urllib.parse.quote(keyword_search)
@@ -38,8 +107,9 @@ if __name__ == "__main__":
 
     res_Jd_central = requests.get(URL_SEARCH_JD_CENTRAL,headers=HEADER_JD_CENTRAL).json()
 
-    JD_Queue = Queue()    
-    Shopee_Queue = Queue()
+
+    Shopee_ll = linklist()
+    JD_ll = linklist()
 
     print('\n*****SHOPEE*****\n')
     for item in res_shopee["items"]:
@@ -56,14 +126,16 @@ if __name__ == "__main__":
         Product_link = URL_LINK_ITEM_SHOPEE+newtaillink
         Product_link = Product_link +'-i.'+ str(item['item_basic']['shopid'])+'.'+str(item['item_basic']['itemid'])
         dict_shopee_product["Product Link"] = Product_link
-        Shopee_Queue.enQueue(dict_shopee_product)
-
-    for item_dict in Shopee_Queue.items:
-        for i in item_dict:
-            print(i,':',item_dict[i])
-        print('-'*100)   
+        a_float = float(item['item_basic']['item_rating']['rating_star'])
+        formatted_float = "{:.2f}".format(a_float)
+        dict_shopee_product["Rating      "] = formatted_float
+        Shopee_ll.append(dict_shopee_product)
+    if keyword_sort == "rx":
+        Shopee_ll.sortMax()
+    elif keyword_sort == "rn":
+        Shopee_ll.sortMin()
+    Shopee_ll.output() 
   
-
 
     print('\n*****JD_CENTRAL*****\n')
     for item in res_Jd_central["wareInfo"]:
@@ -77,9 +149,13 @@ if __name__ == "__main__":
         wname_i = item['wname']
         wname_i = wname_i.replace(" ","%20")
         dict_jd_product["Product Link"] = URL_LINK_ITEM_JD_CENTRAL.format(wname = wname_i,wareId = item['wareId'])
-        JD_Queue.enQueue(dict_jd_product)
+        dict_jd_product["Rating      "] = float(item['starLevel'])
+        JD_ll.append(dict_jd_product)
+
+    if keyword_sort == "rx":
+        JD_ll.sortMax()
+    elif keyword_sort == "rn":
+        JD_ll.sortMin()
+    JD_ll.output()
         
-    for item_dict in JD_Queue.items:
-        for i in item_dict:
-            print(i,':',item_dict[i])
-        print('-'*100)
+   
