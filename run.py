@@ -4,6 +4,22 @@ import html
 import urllib
 import pandas as pd
 
+class Queue:
+   
+    def __init__(self, list = None) :
+        if list == None:
+            self.items = []
+        else :
+            self.items = list
+    def enQueue(self,i):
+        self.items.append(i)       
+    def deQueue(self):
+        return self.items.pop(0)
+    def size(self):
+        return len(self.items)
+    def isEmpty(self):
+        return self.items == []
+
 class node():
     def __init__(self,data):
         self.data = data
@@ -114,6 +130,41 @@ class link_list():
             print('-'*100)
             count_node = count_node.next
 
+def SearchRating(array,temp):
+    output = Queue()
+    long = array.size()
+    i = 0
+    while i < long:
+        
+        if float(array.items[0]['Rating      ']) >= float(temp):
+            output.enQueue(array.deQueue())
+        else:
+            array.deQueue()
+                 
+        i += 1
+    return output
+
+def SearchPrice(array,temp):
+    output = Queue()
+    long = array.size()
+    i = 0
+    while i < long:
+        
+        if float(array.items[0]['originPrice ']) >= float(temp):
+            output.enQueue(array.deQueue())
+        else:
+            array.deQueue()
+            
+        
+        i+=1
+    return output
+
+def printSearch(queue):
+    print('\n*****After_search*****\n')   
+    for i in queue.items:
+        for j in i:
+            print(j,':',i[j])
+        print("-"*100)
 
 def shopee(res_shopee,keyword_sort):
     Shopee_ll = link_list()
@@ -140,6 +191,7 @@ def shopee(res_shopee,keyword_sort):
         formatted_float = '{:.2f}'.format(a_float)
         dict_shopee_product['Rating      '] = formatted_float
         Shopee_ll.append(dict_shopee_product)
+        product.enQueue(dict_shopee_product)
 
     #Sort Price Min->Max
     if keyword_sort == 1:
@@ -178,6 +230,7 @@ def JD_Central(res_Jd_central,keyword_sort):
         dict_jd_product["Product Link"] = URL_LINK_ITEM_JD_CENTRAL.format(wname = wname_i,wareId = item['wareId'])
         dict_jd_product['Rating      '] = float(item['starLevel'])
         JD_Central_ll.append(dict_jd_product)
+        product.enQueue(dict_jd_product)
         
     #Sort Price Min->Max
     if keyword_sort == 1:
@@ -217,7 +270,21 @@ if __name__ == "__main__":
 
     res_Jd_central = requests.get(URL_SEARCH_JD_CENTRAL,headers=HEADER_JD_CENTRAL).json()  
 
+    product = Queue()
+
     shopee(res_shopee,keyword_sort)
 
     JD_Central(res_Jd_central,keyword_sort)
-    
+
+    search_type = int(input('Price(1)\nRating(2)\nEnter type data to search : '))
+
+    if search_type == 1:
+        inputrating = input("Enter your min price : ")
+        
+        price_search = SearchPrice(product, float(inputrating))
+        printSearch(price_search)
+    elif search_type == 2:
+        inputrating = input("Enter your min rating : ")
+        
+        Rating_search = SearchRating(product, float(inputrating))
+        printSearch(Rating_search)
